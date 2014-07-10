@@ -40,6 +40,13 @@ extern int		genlmsg_attrlen(const struct genlmsghdr *, int);
 
 extern char *		genl_op2name(int, int, char *, size_t);
 
+#ifdef LIBNL1_COMPAT
+/* compatibility stuff for netlink 1.0 */
+#define nl_handle nl_sock
+#define nl_handle_alloc_cb nl_socket_alloc_cb
+#define nl_handle_destroy nl_socket_free
+#endif
+
 #ifdef __cplusplus
 }
 #endif
