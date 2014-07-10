@@ -1,3 +1,4 @@
+prefix=/usr/local
 CC=gcc
 WFLAGS=-Wall
 CFLAGS?=-O2
@@ -21,4 +22,7 @@ $(LIBNAME): $(LIBNL_OBJ) $(GENL_OBJ)
 libnl-tiny.a: $(LIBNL_OBJ) $(GENL_OBJ)
 	ar rc $@ $^
 	ranlib libnl-tiny.a
+
+libnl-tiny.pc: libnl-tiny.pc.in
+	sed s,@prefix@,$(prefix),g $< > $@
 
