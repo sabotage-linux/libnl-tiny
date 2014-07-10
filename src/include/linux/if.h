@@ -116,16 +116,6 @@ enum {
  *	being very small might be worth keeping for clean configuration.
  */
 
-struct ifmap 
-{
-	unsigned long mem_start;
-	unsigned long mem_end;
-	unsigned short base_addr; 
-	unsigned char irq;
-	unsigned char dma;
-	unsigned char port;
-	/* 3 bytes spare */
-};
-
+#include <net/if.h>
 
 #endif /* _LINUX_IF_H */
