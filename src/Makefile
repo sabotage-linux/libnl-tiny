@@ -5,6 +5,8 @@ INCLUDES=-Iinclude
 
 LIBNAME=libnl-tiny.so
 
+-include config.mak
+
 all: $(LIBNAME)
 
 %.o: %.c
