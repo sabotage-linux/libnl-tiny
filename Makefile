@@ -1,28 +1,60 @@
 prefix=/usr/local
+libdir=$(prefix)/lib
+includedir=$(prefix)/include
+
 CC=gcc
 WFLAGS=-Wall
 CFLAGS?=-O2
 INCLUDES=-Iinclude
 
-LIBNAME=libnl-tiny.so
+SHAREDLIB=libnl-tiny.so
+STATICLIB=libnl-tiny.a
+PCFILE=libnl-tiny.pc
+ALL_LIBS=$(SHAREDLIB) $(STATICLIB)
+ALL_INCLUDES=$(sort $(wildcard include/*.h include/*/*.h include/*/*/*.h))
+
+LIBNL_SRCS=nl.c handlers.c msg.c attr.c cache.c cache_mngt.c object.c socket.c error.c
+GENL_SRCS=genl.c genl_family.c genl_ctrl.c genl_mngt.c unl.c
+SRCS=$(LIBNL_SRCS) $(GENL_SRCS)
+OBJS=$(SRCS:.c=.o)
+
+PICFLAGS=-fPIC
 
 -include config.mak
 
-all: $(LIBNAME)
+all: $(ALL_LIBS) $(PCFILE)
+
+install: $(ALL_LIBS:%=$(DESTDIR)$(libdir)/%) \
+         $(ALL_INCLUDES:include/%=$(DESTDIR)$(includedir)/libnl-tiny/%) \
+         $(PCFILE:%=$(DESTDIR)$(libdir)/pkgconfig/%)
+
+clean:
+	rm -f $(OBJS) $(ALL_LIBS) $(PCFILE)
 
 %.o: %.c
-	$(CC) $(WFLAGS) -c -o $@ $(INCLUDES) $(CFLAGS) $<
+	$(CC) $(CPPFLAGS) -c -o $@ $(INCLUDES) $(CFLAGS) $(PICFLAGS) $<
 
-LIBNL_OBJ=nl.o handlers.o msg.o attr.o cache.o cache_mngt.o object.o socket.o error.o
-GENL_OBJ=genl.o genl_family.o genl_ctrl.o genl_mngt.o unl.o
 
-$(LIBNAME): $(LIBNL_OBJ) $(GENL_OBJ)
-	$(CC) -shared -o $@ $^
+$(SHAREDLIB): $(OBJS)
+	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-libnl-tiny.a: $(LIBNL_OBJ) $(GENL_OBJ)
+$(STATICLIB): $(OBJS)
+	rm -f $@
 	ar rc $@ $^
-	ranlib libnl-tiny.a
+	ranlib $@
 
-libnl-tiny.pc: libnl-tiny.pc.in
+$(PCFILE): $(PCFILE).in
 	sed s,@prefix@,$(prefix),g $< > $@
 
+
+$(DESTDIR)$(includedir)/libnl-tiny/%: include/%
+	install -D -m 644 $< $@
+
+$(DESTDIR)$(libdir)/%: %
+	install -D -m 644 $< $@
+
+$(DESTDIR)$(libdir)/pkgconfig/%: %
+	install -D -m 644 $< $@
+
+
+.PHONY: all clean install
