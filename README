@@ -10,7 +10,7 @@ upstream URL: git://git.openwrt.org/openwrt.git (attention: HUGE)
 web interface: 
 http://git.openwrt.org/?p=openwrt.git;a=tree;f=package/libs/libnl-tiny
 
-the version used in this fork is equivalent to upstream SVN rev 33657,
+the version used in this fork is equivalent to upstream SVN rev 39991,
 and comes with a much improved Makefile and other portability fixes
 that make it possible to use libnl-tiny outside the openwrt source tree.
 
