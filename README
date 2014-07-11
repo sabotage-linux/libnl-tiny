@@ -1,0 +1,52 @@
+LIBNL-TINY
+==========
+
+libnl-tiny is a tiny replacement for libnl versions 1 and 2
+
+it was originally developed by openwrt and can be found in their
+trunk repo in the path package/lib/libnl-tiny.
+
+upstream URL: git://git.openwrt.org/openwrt.git (attention: HUGE)
+web interface: 
+http://git.openwrt.org/?p=openwrt.git;a=tree;f=package/libs/libnl-tiny
+
+the version used in this fork is equivalent to upstream SVN rev 33657,
+and comes with a much improved Makefile and other portability fixes
+that make it possible to use libnl-tiny outside the openwrt source tree.
+
+libnl-tiny is known to work without issues with at least:
+iw, wpa-supplicant, kismet, aircrack-ng, libpcap
+
+so far there are no known packages expecting libnl that cannot be built
+against libnl-tiny.
+
+
+BUILD/INSTALL
+=============
+
+make prefix=/usr DESTDIR=foo all install
+
+you can place custom CFLAGS and other variables used in Makefile in config.mak.
+the user supplied variables override the ones used in the Makefile.
+
+if you need only a static library, run
+make ALL_LIBS=libnl-tiny.a prefix=/usr DESTDIR=foo all install
+
+
+LIBNL1_COMPAT
+=============
+
+if you compile a package against libnl-tiny, and get error messages about
+nl_handle*, add -DLIBNL1_COMPAT to your CPPFLAGS or CFLAGS when you run
+the packages configure script or Makefile.
+
+
+RELEASE TARBALLS
+================
+
+release tarballs matching the equivalent git tags of this repo can be found at
+
+* DE : http://ftp.barfooze.de/pub/sabotage/tarballs
+* GR : http://foss.aueb.gr/mirrors/linux/sabotage/tarballs
+* UK : http://dl.2f30.org/mirrors/sabotage/tarballs
+
