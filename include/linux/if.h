@@ -116,6 +116,4 @@ enum {
  *	being very small might be worth keeping for clean configuration.
  */
 
-#include <net/if.h>
-
 #endif /* _LINUX_IF_H */
