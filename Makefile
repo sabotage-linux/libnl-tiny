@@ -3,6 +3,8 @@ libdir=$(prefix)/lib
 includedir=$(prefix)/include
 
 CC=gcc
+AR=ar
+RANLIB=ranlib
 WFLAGS=-Wall
 CFLAGS?=-O2
 INCLUDES=-Iinclude
@@ -40,8 +42,8 @@ $(SHAREDLIB): $(OBJS)
 
 $(STATICLIB): $(OBJS)
 	rm -f $@
-	ar rc $@ $^
-	ranlib $@
+	$(AR) rc $@ $^
+	$(RANLIB) $@
 
 $(PCFILE): $(PCFILE).in
 	sed s,@prefix@,$(prefix),g $< > $@
