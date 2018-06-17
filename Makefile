@@ -5,6 +5,7 @@ includedir=$(prefix)/include
 CC=gcc
 AR=ar
 RANLIB=ranlib
+INSTALL=./install.sh
 WFLAGS=-Wall
 CFLAGS?=-O2
 INCLUDES=-Iinclude
@@ -50,13 +51,13 @@ $(PCFILE): $(PCFILE).in
 
 
 $(DESTDIR)$(includedir)/libnl-tiny/%: include/%
-	install -D -m 644 $< $@
+	$(INSTALL) -D -m 644 $< $@
 
 $(DESTDIR)$(libdir)/%: %
-	install -D -m 644 $< $@
+	$(INSTALL) -D -m 644 $< $@
 
 $(DESTDIR)$(libdir)/pkgconfig/%: %
-	install -D -m 644 $< $@
+	$(INSTALL) -D -m 644 $< $@
 
 
 .PHONY: all clean install
