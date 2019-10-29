@@ -400,7 +400,9 @@ int nl_recv(struct nl_sock *sk, struct sockaddr_nl *nla,
 		page_size = getpagesize() * 4;
 
 	iov.iov_len = page_size;
-	iov.iov_base = *buf = malloc(iov.iov_len);
+	iov.iov_base = *buf = calloc(1, iov.iov_len);
+	if (!*buf)
+		return -nl_syserr2nlerr(errno);
 
 	if (sk->s_flags & NL_SOCK_PASSCRED) {
 		msg.msg_controllen = CMSG_SPACE(sizeof(struct ucred));
@@ -421,6 +423,7 @@ retry:
 		} else {
 			free(msg.msg_control);
 			free(*buf);
+			*buf = NULL;
 			return -nl_syserr2nlerr(errno);
 		}
 	}
@@ -445,6 +448,7 @@ retry:
 	if (msg.msg_namelen != sizeof(struct sockaddr_nl)) {
 		free(msg.msg_control);
 		free(*buf);
+		*buf = NULL;
 		return -NLE_NOADDR;
 	}
 
@@ -463,6 +467,7 @@ retry:
 abort:
 	free(msg.msg_control);
 	free(*buf);
+	*buf = NULL;
 	return 0;
 }
 
@@ -500,6 +505,9 @@ continue_reading:
 
 	if (n <= 0)
 		return n;
+
+	/* make clang analyzer happy */
+	assert(n > 0 && buf);
 
 	NL_DBG(3, "recvmsgs(%p): Read %d bytes\n", sk, n);
 
