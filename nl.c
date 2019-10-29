@@ -645,7 +645,6 @@ continue_reading:
 				NL_CB_CALL(cb, NL_CB_VALID, msg);
 		}
 skip:
-		err = 0;
 		hdr = nlmsg_next(hdr, &n);
 	}
 	
