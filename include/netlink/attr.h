@@ -299,6 +299,31 @@ static inline uint16_t nla_get_u16(struct nlattr *nla)
 }
 
 /**
+ * Add 32 bit signed integer attribute to netlink message.
+ * @arg msg             Netlink message.
+ * @arg attrtype        Attribute type.
+ * @arg value           Numeric value to store as payload.
+ *
+ * @see nla_put
+ * @return 0 on success or a negative error code.
+ */
+static inline int nla_put_s32(struct nl_msg *msg, int attrtype, int32_t value)
+{
+	return nla_put(msg, attrtype, sizeof(int32_t), &value);
+}
+
+/**
+ * Return payload of 32 bit signed integer attribute.
+ * @arg nla             32 bit integer attribute.
+ *
+ * @return Payload as 32 bit integer.
+ */
+static inline int32_t nla_get_s32(struct nlattr *nla)
+{
+	return *(int32_t *) nla_data(nla);
+}
+
+/**
  * Add 32 bit integer attribute to netlink message.
  * @arg msg		Netlink message.
  * @arg attrtype	Attribute type.
@@ -630,6 +655,15 @@ static inline size_t nla_strlcpy(char *dst, const struct nlattr *nla, size_t dst
  */
 #define NLA_PUT_U16(msg, attrtype, value) \
 	NLA_PUT_TYPE(msg, uint16_t, attrtype, value)
+
+/**
+ * Add 32 bit signed integer attribute to netlink message.
+ * @arg msg		Netlink message.
+ * @arg attrtype	Attribute type.
+ * @arg value		Numeric value.
+ */
+#define NLA_PUT_S32(msg, attrtype, value) \
+	NLA_PUT_TYPE(msg, int32_t, attrtype, value)
 
 /**
  * Add 32 bit integer attribute to netlink message.
