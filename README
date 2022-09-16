@@ -4,13 +4,14 @@ LIBNL-TINY
 libnl-tiny is a tiny replacement for libnl versions 1 and 2
 
 it was originally developed by openwrt and can be found in their
-trunk repo in the path package/lib/libnl-tiny.
+git repo.
 
-upstream URL: git://git.openwrt.org/openwrt.git (attention: HUGE)
-web interface: 
-http://git.openwrt.org/?p=openwrt.git;a=tree;f=package/libs/libnl-tiny
+upstream URL: git://git.openwrt.org/project/libnl-tiny.git
+web interface:
+https://git.openwrt.org/?p=project/libnl-tiny.git;a=shortlog
 
-the version used in this fork is equivalent to upstream SVN rev 39991,
+the version used in this fork is equivalent to upstream commit
+28c44ca97cd546ef8168e7476472a0da022b3421.
 and comes with a much improved Makefile and other portability fixes
 that make it possible to use libnl-tiny outside the openwrt source tree.
 
